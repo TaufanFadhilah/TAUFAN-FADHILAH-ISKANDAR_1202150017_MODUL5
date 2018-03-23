@@ -16,10 +16,10 @@ import java.util.LinkedList;
 public class RecyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>{
 
-    private final LinkedList<String> mWordList;
+    private final LinkedList<ToDo> mWordList;
     private LayoutInflater mInflater;
 
-    public RecyclerViewAdapter(Context context, LinkedList<String> wordList) {
+    public RecyclerViewAdapter(Context context, LinkedList<ToDo> wordList) {
         mInflater = LayoutInflater.from(context);
         this.mWordList = wordList;
     }
@@ -32,8 +32,9 @@ public class RecyclerViewAdapter extends
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapter.RecyclerViewHolder holder, int position) {
-        String mCurrent = mWordList.get(position);
-        holder.wordItemView.setText(mCurrent);
+        holder.wordNameView.setText(mWordList.get(position).getName());
+        holder.wordDescView.setText(mWordList.get(position).getDesc());
+        holder.wordPriorityView.setText(mWordList.get(position).getPriority());
     }
 
     @Override
@@ -42,12 +43,14 @@ public class RecyclerViewAdapter extends
     }
 
     class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        public final TextView wordItemView;
+        public final TextView wordNameView, wordDescView, wordPriorityView;
         final RecyclerViewAdapter mAdapter;
 
         public RecyclerViewHolder(View itemView, RecyclerViewAdapter adapter) {
             super(itemView);
-            wordItemView = (TextView) itemView.findViewById(R.id.txtTitle);
+            wordNameView = (TextView) itemView.findViewById(R.id.txtTitle);
+            wordDescView = (TextView) itemView.findViewById(R.id.txtDesc);
+            wordPriorityView = (TextView) itemView.findViewById(R.id.txtPriority);
             this.mAdapter = adapter;
         }
     }

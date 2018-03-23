@@ -17,22 +17,24 @@ import java.util.LinkedList;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final LinkedList<String> mWordList = new LinkedList<>();
+    private LinkedList<ToDo> mWordList = new LinkedList<>();
     private int mCount = 0;
 
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter mAdapter;
-
+    private DatabaseHandler databaseHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Check DB
+        databaseHandler = new DatabaseHandler(this);
+
+        mWordList = databaseHandler.findAll();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        for (int i = 0; i < 20; i++) {
-            mWordList.addLast("Word " + mCount++);
-            Log.d("WordList", mWordList.getLast());
-        }
         // Get a handle to the RecyclerView.
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         // Create an adapter and supply the data to be displayed.
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("new name : ",data.getStringExtra("name"));
             Log.d("new desc : ",data.getStringExtra("desc"));
             Log.d("new priority : ",data.getStringExtra("priority"));
+            databaseHandler.save(new ToDo(data.getStringExtra("name"), data.getStringExtra("desc"), data.getStringExtra("priority")));
         }
     }
 }
