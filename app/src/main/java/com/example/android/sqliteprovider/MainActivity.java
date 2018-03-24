@@ -1,5 +1,6 @@
 package com.example.android.sqliteprovider;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +14,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -53,7 +57,37 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Dialog dialog = new Dialog(MainActivity.this);
+            dialog.setContentView(R.layout.custom_dialog);
+            dialog.setTitle("Change");
+            dialog.setCancelable(true);
+            // there are a lot of settings, for dialog, check them all out!
+            // set up radiobutton
+            final RadioButton rdRed = (RadioButton) dialog.findViewById(R.id.rdRed);
+            final RadioButton rdBlue = (RadioButton) dialog.findViewById(R.id.rdBlue);
+            final RadioButton rdGreen = (RadioButton) dialog.findViewById(R.id.rdGreen);
+            Button btnChange = (Button)dialog.findViewById(R.id.btnChange);
+            btnChange.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (rdRed.isChecked()){
+                        mRecyclerView.setBackgroundResource(R.color.redBackgroud);
+                        Toast.makeText(view.getContext(),"Red Choosen",Toast.LENGTH_SHORT).show();
+                    }
+                    if (rdBlue.isChecked()){
+                        mRecyclerView.setBackgroundResource(R.color.blueBackgroud);
+                        Toast.makeText(view.getContext(),"Blue Choosen",Toast.LENGTH_SHORT).show();
+                    }
+                    if (rdGreen.isChecked()){
+                        mRecyclerView.setBackgroundResource(R.color.greenBackgroud);
+                        Toast.makeText(view.getContext(),"Green Choosen",Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(view.getContext(),"Changed",Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            // now that the dialog is set up, it's time to show it
+            dialog.show();
         }
 
         return super.onOptionsItemSelected(item);
