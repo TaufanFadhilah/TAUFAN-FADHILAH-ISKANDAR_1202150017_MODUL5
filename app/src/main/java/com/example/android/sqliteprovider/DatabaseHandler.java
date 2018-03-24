@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -24,9 +25,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_DESC = "desc";
     private static final String KEY_PRIORITY = "priority";
+    static Context context;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -75,5 +78,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
 
         return listBuku;
+    }
+
+    public boolean delete(ToDo todo){
+        SQLiteDatabase db=this.getWritableDatabase();
+        return db.delete(TABLE_NAME, "id =" + todo.getId(), null) > 0;
     }
 }

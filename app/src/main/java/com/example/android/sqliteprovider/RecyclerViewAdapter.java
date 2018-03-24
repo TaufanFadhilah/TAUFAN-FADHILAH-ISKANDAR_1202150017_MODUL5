@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -16,7 +17,7 @@ import java.util.LinkedList;
 public class RecyclerViewAdapter extends
         RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder>{
 
-    private final LinkedList<ToDo> mWordList;
+    private LinkedList<ToDo> mWordList;
     private LayoutInflater mInflater;
 
     public RecyclerViewAdapter(Context context, LinkedList<ToDo> wordList) {
@@ -52,6 +53,18 @@ public class RecyclerViewAdapter extends
             wordDescView = (TextView) itemView.findViewById(R.id.txtDesc);
             wordPriorityView = (TextView) itemView.findViewById(R.id.txtPriority);
             this.mAdapter = adapter;
+        }
+    }
+
+    public void dismissData(int pos){
+        DatabaseHandler db = new DatabaseHandler(mInflater.getContext());
+        boolean deleted = db.delete(mWordList.get(pos));
+        if (deleted){
+            mWordList.remove(pos);
+            this.notifyItemRemoved(pos);
+            Toast.makeText(mInflater.getContext(),"Deleted Success",Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(mInflater.getContext(),"Deleted Failed",Toast.LENGTH_SHORT).show();
         }
     }
 }
