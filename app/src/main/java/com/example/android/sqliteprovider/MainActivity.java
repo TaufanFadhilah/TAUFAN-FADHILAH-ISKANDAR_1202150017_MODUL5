@@ -31,18 +31,9 @@ public class MainActivity extends AppCompatActivity {
         //Check DB
         databaseHandler = new DatabaseHandler(this);
 
-        mWordList = databaseHandler.findAll();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        // Get a handle to the RecyclerView.
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        // Create an adapter and supply the data to be displayed.
-        mAdapter = new RecyclerViewAdapter(this, mWordList);
-        // Connect the adapter with the RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
-        // Give the RecyclerView a default layout manager.
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        setRecyclerView();
     }
 
     @Override
@@ -73,6 +64,18 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 1);
     }
 
+    public void setRecyclerView(){
+        mWordList = databaseHandler.findAll();
+        // Get a handle to the RecyclerView.
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        // Create an adapter and supply the data to be displayed.
+        mAdapter = new RecyclerViewAdapter(this, mWordList);
+        // Connect the adapter with the RecyclerView.
+        mRecyclerView.setAdapter(mAdapter);
+        // Give the RecyclerView a default layout manager.
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -82,5 +85,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("new priority : ",data.getStringExtra("priority"));
             databaseHandler.save(new ToDo(data.getStringExtra("name"), data.getStringExtra("desc"), data.getStringExtra("priority")));
         }
+        setRecyclerView();
+        mAdapter.notifyDataSetChanged();
     }
 }
